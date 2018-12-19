@@ -59,7 +59,7 @@
       "sku": {
         "name": "[parameters('storageAccountType')]"
       },
-      "kind": "BlobStorage",
+      "kind": "StorageV2",
       "properties": {
         "supportsHttpsTrafficOnly": true,
         "accessTier": "Hot",

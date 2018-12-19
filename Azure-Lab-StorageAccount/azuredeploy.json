@@ -45,7 +45,6 @@
     "StorageAccountName": "[toLower(variables('sauniquevalue'))]",
     "subnetResourceID": "[resourceId(parameters('existingVirtualNetworkRG'), 'Microsoft.Network/virtualNetworks/subnets', parameters('existingVirtualNetworkName'), parameters('SubnetName'))]"
 
-
   },
   "resources": [
 

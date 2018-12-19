@@ -1,8 +1,82 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
-  "parameters": {},
-  "variables": {},
-  "resources": [],
+  "parameters": {
+
+    "existingVirtualNetworkName": {
+      "type": "string",
+      "defaultValue": "Add vNet Name where this VM will be deployed to",
+      "metadata": {
+        "description": "Specify the name for the vNet to whcih this storage account will be linked."
+      }
+    },
+    "existingVirtualNetworkResourceGroup": {
+      "type": "string",
+      "defaultValue": "Add vNet RG Name",
+      "metadata": {
+        "description": "Name of the existing VNET resource group"
+      }
+    },
+    "SubnetName": {
+      "type": "string",
+      "defaultValue": "Add Subnet Name to which this storage account will be linked",
+      "metadata": {
+        "description": "Name of the subnet in the virtual network you want to put this VM"
+      }
+    },
+    "storageAccountType": {
+      "type": "string",
+      "defaultValue": "Standard_RAGRS",
+      "allowedValues": [
+        "Standard_LRS",
+        "Standard_GRS",
+        "Standard_ZRS",
+        "Premium_LRS",
+        "Standard_RAGRS"
+      ],
+      "metadata": {
+        "description": "Storage Account type"
+      }
+    }
+  },
+  "variables": {
+
+    "sauniquevalue": "[concat('storage', uniqueString(resourceGroup().id))]",
+    "StorageAccountName": "[toLower(variables('sauniquevalue'))]",
+    "subnetResourceID": "[resourceId(parameters('existingVirtualNetworkResourceGroup'), 'Microsoft.Network/virtualNetworks/subnets', parameters('existingVirtualNetworkName'), parameters('dnsServerSubnetName'))]"
+
+
+  },
+  "resources": [
+
+    {
+      "type": "Microsoft.Storage/storageAccounts",
+      "name": "[variables('StorageAccountName')]",
+      "apiVersion": "2017-06-01",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+
+      ],
+      "sku": {
+        "name": "[parameters('storageAccountType')]"
+      },
+      "kind": "BlobStorage",
+      "properties": {
+        "networkAcls": {
+          "bypass": "AzureServices",
+          "supportsHttpsTrafficOnly": true,
+          "accessTier": "Hot",
+          "virtualNetworkRules": [
+            {
+              "id": "[variables('subnetResourceID')]",
+              "action": "Allow"
+            }
+          ],
+          "defaultAction": "Deny"
+        }
+      }
+    }
+
+  ],
   "outputs": {}
 }

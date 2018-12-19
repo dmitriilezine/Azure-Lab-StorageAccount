@@ -52,7 +52,7 @@
     {
       "type": "Microsoft.Storage/storageAccounts",
       "name": "[variables('StorageAccountName')]",
-      "apiVersion": "2017-06-01",
+      "apiVersion": "2018-07-01",
       "location": "[resourceGroup().location]",
       "dependsOn": [
 
@@ -62,10 +62,10 @@
       },
       "kind": "BlobStorage",
       "properties": {
+        "supportsHttpsTrafficOnly": true,
+        "accessTier": "Hot",
         "networkAcls": {
           "bypass": "AzureServices",
-          "supportsHttpsTrafficOnly": true,
-          "accessTier": "Hot",
           "virtualNetworkRules": [
             {
               "id": "[variables('subnetResourceID')]",

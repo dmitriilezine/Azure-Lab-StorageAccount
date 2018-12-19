@@ -5,12 +5,12 @@
 
     "existingVirtualNetworkName": {
       "type": "string",
-      "defaultValue": "Add vNet Name where this VM will be deployed to",
+      "defaultValue": "Add vNet Name where this storage account will be linked to",
       "metadata": {
         "description": "Specify the name for the vNet to whcih this storage account will be linked."
       }
     },
-    "existingVirtualNetworkResourceGroup": {
+    "existingVirtualNetworkRG": {
       "type": "string",
       "defaultValue": "Add vNet RG Name",
       "metadata": {
@@ -43,7 +43,7 @@
 
     "sauniquevalue": "[concat('storage', uniqueString(resourceGroup().id))]",
     "StorageAccountName": "[toLower(variables('sauniquevalue'))]",
-    "subnetResourceID": "[resourceId(parameters('existingVirtualNetworkResourceGroup'), 'Microsoft.Network/virtualNetworks/subnets', parameters('existingVirtualNetworkName'), parameters('dnsServerSubnetName'))]"
+    "subnetResourceID": "[resourceId(parameters('existingVirtualNetworkRG'), 'Microsoft.Network/virtualNetworks/subnets', parameters('existingVirtualNetworkName'), parameters('SubnetName'))]"
 
 
   },

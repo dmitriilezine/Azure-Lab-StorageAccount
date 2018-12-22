@@ -41,7 +41,7 @@
   },
   "variables": {
 
-    "sauniquevalue": "[concat('storage', uniqueString(resourceGroup().id))]",
+    "sauniquevalue": "[concat('vmdiag-', uniqueString(resourceGroup().id))]",
     "StorageAccountName": "[toLower(variables('sauniquevalue'))]",
     "subnetResourceID": "[resourceId(parameters('existingVirtualNetworkRG'), 'Microsoft.Network/virtualNetworks/subnets', parameters('existingVirtualNetworkName'), parameters('SubnetName'))]"
 

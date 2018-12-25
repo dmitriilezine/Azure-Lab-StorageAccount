@@ -41,8 +41,10 @@
   },
   "variables": {
 
-    "sauniquevalue": "[concat('vmdiag', uniqueString(resourceGroup().id))]",
-    "StorageAccountName": "[toLower(variables('sauniquevalue'))]",
+    "vmdiagsa": "[concat('vmdiag', uniqueString(resourceGroup().id))]",
+    "vmDiagSAName": "[toLower(variables('vmdiagsa'))]",
+    "networksa": "[concat('network', uniqueString(resourceGroup().id))]",
+    "networkSAName": "[toLower(variables('networksa'))]",
     "subnetResourceID": "[resourceId(parameters('existingVirtualNetworkRG'), 'Microsoft.Network/virtualNetworks/subnets', parameters('existingVirtualNetworkName'), parameters('SubnetName'))]"
 
   },
@@ -50,12 +52,41 @@
 
     {
       "type": "Microsoft.Storage/storageAccounts",
-      "name": "[variables('StorageAccountName')]",
+      "name": "[variables('vmDiagSAName')]",
       "apiVersion": "2018-07-01",
       "location": "[resourceGroup().location]",
-      "dependsOn": [
-
-      ],
+      "dependsOn": [],
+      "sku": {
+        "name": "[parameters('storageAccountType')]"
+      },
+      "kind": "StorageV2",
+      "properties": {
+        "supportsHttpsTrafficOnly": true,
+        "accessTier": "Hot"
+      }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts",
+      "name": "[variables('networkSAName')]",
+      "apiVersion": "2018-07-01",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [],
+      "sku": {
+        "name": "[parameters('storageAccountType')]"
+      },
+      "kind": "StorageV2",
+      "properties": {
+        "supportsHttpsTrafficOnly": true,
+        "accessTier": "Hot"
+      }
+    },
+    {
+      "condition": "[equals('No','Yes')]",
+      "type": "Microsoft.Storage/storageAccounts",
+      "name": "[variables('vmDiagSAName')]",
+      "apiVersion": "2018-07-01",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [],
       "sku": {
         "name": "[parameters('storageAccountType')]"
       },

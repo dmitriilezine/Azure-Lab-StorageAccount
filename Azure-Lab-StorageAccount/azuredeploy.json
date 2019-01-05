@@ -45,6 +45,8 @@
     "vmDiagSAName": "[toLower(variables('vmdiagsa'))]",
     "networksa": "[concat('network', uniqueString(resourceGroup().id))]",
     "networkSAName": "[toLower(variables('networksa'))]",
+    "placehoildersa": "[concat('placeholder', uniqueString(resourceGroup().id))]",
+    "placeholderSAName": "[toLower(variables('placehoildersa'))]",
     "subnetResourceID": "[resourceId(parameters('existingVirtualNetworkRG'), 'Microsoft.Network/virtualNetworks/subnets', parameters('existingVirtualNetworkName'), parameters('SubnetName'))]"
 
   },
@@ -83,7 +85,7 @@
     {
       "condition": "[equals('No','Yes')]",
       "type": "Microsoft.Storage/storageAccounts",
-      "name": "[variables('vmDiagSAName')]",
+      "name": "[variables('placeholderSAName')]",
       "apiVersion": "2018-07-01",
       "location": "[resourceGroup().location]",
       "dependsOn": [],
